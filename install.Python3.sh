@@ -3,16 +3,19 @@
 
 function install_Python3()
 {
-    version="$1"
-    mkdir -p /tools/
-    test -f /tools/Python-${version}.tgz && rm -f /tools/Python-${version}.tgz
-    wget -P /tools/ https://www.python.org/ftp/python/${version}/Python-${version}.tgz
-    if [[ $? -eq 0 ]] && [[ -f /tools/Python-${version}.tgz ]] ; then
-        cd /tools/
-        tar zxvf Python-${version}.tgz
-        cd Python-${version}
-        ./configure --prefix=/usr/local/Python-${version}
-        make && make install
+    py_new_ver="$1"
+    test -f Python-${version}.tgz && rm -f Python-${version}.tgz
+    wget -c https://www.python.org/ftp/python/${version}/Python-${version}.tgz && \
+    tar zxvf Python-${version}.tgz && \
+    cd Python-${version} && \
+    ./configure --prefix=/usr/local/Python-${version} && \
+    make && make install 
+    if [[ $? -eq 0 ]] ; then
+        echo "Python Ver : ${py_new_ver} install succeed."
+        exit 0
+    else
+        echo "Python Ver : ${py_new_ver} install fail."
+        exit 1
     fi
 }
 
